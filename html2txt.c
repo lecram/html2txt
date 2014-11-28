@@ -73,6 +73,10 @@ print_tree(GumboNode *node, int plain)
         node->v.element.tag != GUMBO_TAG_SCRIPT &&
         node->v.element.tag != GUMBO_TAG_STYLE
     ) {
+        if (node->v.element.tag == GUMBO_TAG_BR) {
+            printf("\n");
+            return;
+        }
         plain = (
             node->v.element.tag == GUMBO_TAG_CODE ||
             node->v.element.tag == GUMBO_TAG_PRE
