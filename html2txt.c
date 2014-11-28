@@ -77,6 +77,8 @@ print_tree(GumboNode *node, int plain)
             node->v.element.tag == GUMBO_TAG_CODE ||
             node->v.element.tag == GUMBO_TAG_PRE
         );
+        if (node->v.element.tag == GUMBO_TAG_LI)
+            printf("* ");
         children = &node->v.element.children;
         for (i = 0; i < (int) children->length; i++)
             print_tree((GumboNode *) children->data[i], plain);
