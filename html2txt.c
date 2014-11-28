@@ -7,6 +7,28 @@
 
 #include "gumbo.h"
 
+static char *
+read_stdin()
+{
+    char buffer[BUFSIZ];
+    char *output;
+    int extra;
+    int length = 0;
+    int bulk = 1024;
+
+    output = (char *) malloc(bulk);
+    strcpy(output, "");
+    while ((extra = fread(buffer, 1, BUFSIZ, stdin))) {
+        while (length + extra > bulk - 1) {
+            bulk += bulk >> 1;
+            output = (char *) realloc(output, bulk);
+        }
+        strcat(output, buffer);
+        length += strlen(buffer);
+    }
+    return output;
+}
+
 static void
 read_file(FILE* fp, char** output, int* length)
 {
@@ -116,13 +138,23 @@ print_tree(GumboNode *node, int plain)
 }
 
 int
-main()
+main(int argc, char *argv[])
 {
     char *raw_html;
     GumboOutput *parsed_html;
     int length;
 
-    read_file(stdin, &raw_html, &length);
+    if (argc == 1)
+        raw_html = read_stdin();
+    else if (argc == 2) {
+        FILE *fp = fopen(argv[1], "r");
+        read_file(fp, &raw_html, &length);
+        fclose(fp);
+    }
+    else {
+        puts("invalid arguments");
+        return 1;
+    }
     parsed_html = gumbo_parse(raw_html);
     print_tree(parsed_html->root, 0);
     printf("\n");
