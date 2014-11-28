@@ -116,16 +116,13 @@ main()
 {
     char *raw_html;
     GumboOutput *parsed_html;
-    FILE *fp;
     int length;
 
-    fp = fopen("test.html", "r");
-    read_file(fp, &raw_html, &length);
+    read_file(stdin, &raw_html, &length);
     parsed_html = gumbo_parse(raw_html);
     print_tree(parsed_html->root, 0);
     printf("\n");
     gumbo_destroy_output(&kGumboDefaultOptions, parsed_html);
     free(raw_html);
-    fclose(fp);
     return 0;
 }
