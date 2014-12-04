@@ -150,8 +150,7 @@ main(int argc, char *argv[])
         FILE *fp = fopen(argv[1], "r");
         read_file(fp, &raw_html, &length);
         fclose(fp);
-    }
-    else {
+    } else {
         puts("invalid arguments");
         return 1;
     }
