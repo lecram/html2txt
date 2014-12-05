@@ -130,7 +130,7 @@ main(int argc, char *argv[])
     GumboOutput *parsed_html;
 
     if (argc != 1) {
-        fprintf(stderr, "%s expects no arguments\n", argv[1]);
+        fprintf(stderr, "%s expects no arguments\n", argv[0]);
         return 1;
     }
     raw_html = read_stdin();
