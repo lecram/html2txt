@@ -92,7 +92,6 @@ print_tree(GumboNode *node, int plain)
         if (node->v.element.tag == GUMBO_TAG_LI)
             printf("* ");
         if (
-            node->v.element.tag == GUMBO_TAG_TITLE ||
             node->v.element.tag == GUMBO_TAG_H1 ||
             node->v.element.tag == GUMBO_TAG_H2 ||
             node->v.element.tag == GUMBO_TAG_H3 ||
