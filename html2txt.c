@@ -23,24 +23,10 @@ read_stdin()
             bulk += bulk >> 1;
             output = (char *) realloc(output, bulk);
         }
-        strcat(output, buffer);
+        strncat(output, buffer, extra);
         length += strlen(buffer);
     }
     return output;
-}
-
-static void
-read_file(FILE* fp, char** output, int* length)
-{
-    struct stat filestats;
-    int fd = fileno(fp);
-    fstat(fd, &filestats);
-    *length = filestats.st_size;
-    *output = malloc(*length + 1);
-    int start = 0;
-    int bytes_read;
-    while ((bytes_read = fread(*output + start, 1, *length - start, fp)))
-        start += bytes_read;
 }
 
 static void
@@ -142,18 +128,12 @@ main(int argc, char *argv[])
 {
     char *raw_html;
     GumboOutput *parsed_html;
-    int length;
 
-    if (argc == 1)
-        raw_html = read_stdin();
-    else if (argc == 2) {
-        FILE *fp = fopen(argv[1], "r");
-        read_file(fp, &raw_html, &length);
-        fclose(fp);
-    } else {
-        puts("invalid arguments");
+    if (argc != 1) {
+        fprintf(stderr, "%s expects no arguments\n", argv[1]);
         return 1;
     }
+    raw_html = read_stdin();
     parsed_html = gumbo_parse(raw_html);
     print_tree(parsed_html->root, 0);
     printf("\n");
