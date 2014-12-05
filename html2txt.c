@@ -91,6 +91,16 @@ print_tree(GumboNode *node, int plain)
         );
         if (node->v.element.tag == GUMBO_TAG_LI)
             printf("* ");
+        if (
+            node->v.element.tag == GUMBO_TAG_TITLE ||
+            node->v.element.tag == GUMBO_TAG_H1 ||
+            node->v.element.tag == GUMBO_TAG_H2 ||
+            node->v.element.tag == GUMBO_TAG_H3 ||
+            node->v.element.tag == GUMBO_TAG_H4 ||
+            node->v.element.tag == GUMBO_TAG_H5 ||
+            node->v.element.tag == GUMBO_TAG_H6
+        )
+            printf("\n\n");
         children = &node->v.element.children;
         for (i = 0; i < (int) children->length; i++)
             print_tree((GumboNode *) children->data[i], plain);
@@ -103,7 +113,7 @@ print_tree(GumboNode *node, int plain)
             node->v.element.tag == GUMBO_TAG_H5 ||
             node->v.element.tag == GUMBO_TAG_H6
         )
-            printf("\n\n\n");
+            printf("\n\n");
         else if (node->v.element.tag == GUMBO_TAG_P)
             printf("\n\n");
         else if (node->v.element.tag == GUMBO_TAG_LI)
