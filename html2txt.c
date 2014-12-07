@@ -110,13 +110,17 @@ print_tree(GumboNode *node, int plain)
             node->v.element.tag == GUMBO_TAG_H3 ||
             node->v.element.tag == GUMBO_TAG_H4 ||
             node->v.element.tag == GUMBO_TAG_H5 ||
-            node->v.element.tag == GUMBO_TAG_H6
+            node->v.element.tag == GUMBO_TAG_H6 ||
+            node->v.element.tag == GUMBO_TAG_P
         )
             printf("\n\n");
-        else if (node->v.element.tag == GUMBO_TAG_P)
-            printf("\n\n");
-        else if (node->v.element.tag == GUMBO_TAG_LI)
+        else if (
+            node->v.element.tag == GUMBO_TAG_LI ||
+            node->v.element.tag == GUMBO_TAG_TR
+        )
             printf("\n");
+        else if (node->v.element.tag == GUMBO_TAG_TD)
+            printf("\t");
         else if (node->v.element.tag == GUMBO_TAG_A) {
             href = gumbo_get_attribute(&node->v.element.attributes, "href");
             if (href)
