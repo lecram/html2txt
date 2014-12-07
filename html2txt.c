@@ -1,4 +1,4 @@
-/* gcc -Igumbo -static -o html2txt html2txt.c -Lgumbo -lgumbo */
+/* gcc -O2 -Igumbo -static -o html2txt html2txt.c -Lgumbo -lgumbo */
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -68,7 +68,7 @@ static void
 print_tree(GumboNode *node, int plain)
 {
     GumboVector *children;
-    GumboAttribute *attr;
+    GumboAttribute *href, *src, *alt;
     int i;
 
     if (node->type == GUMBO_NODE_TEXT) {
@@ -118,16 +118,17 @@ print_tree(GumboNode *node, int plain)
         else if (node->v.element.tag == GUMBO_TAG_LI)
             printf("\n");
         else if (node->v.element.tag == GUMBO_TAG_A) {
-            attr = gumbo_get_attribute(&node->v.element.attributes, "href");
-            if (attr)
-                printf(" <%s>", attr->value);
+            href = gumbo_get_attribute(&node->v.element.attributes, "href");
+            if (href)
+                printf(" <%s>", href->value);
         }
         else if (node->v.element.tag == GUMBO_TAG_IMG) {
-            attr = gumbo_get_attribute(&node->v.element.attributes, "alt");
-            if (attr && strlen(attr->value))
-                printf("\n{image: %s}\n", attr->value);
+            src = gumbo_get_attribute(&node->v.element.attributes, "src");
+            alt = gumbo_get_attribute(&node->v.element.attributes, "alt");
+            if (alt && strlen(alt->value))
+                printf("\n{%s <%s>}\n", alt->value, src->value);
             else
-                printf("\n{image}\n");
+                printf("\n{<%s>}\n", src->value);
         }
     }
 }
